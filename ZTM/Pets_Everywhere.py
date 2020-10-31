@@ -46,3 +46,4 @@ my_pets = Pets(my_cats)
 
 # 4 Output all of the cats walking using the my_pets instance
 print(my_pets.walk())
+print(Kitty.sing('Kitty', 'meow'))
