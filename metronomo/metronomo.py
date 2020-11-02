@@ -1,52 +1,60 @@
-import sys, pygame, time 
+import sys
+import pygame
+import time
+from playsound import playsound
 
-background_colour = (255,255,255)
-black = (0,0,0)
+# General settings
+background_colour = (255, 255, 255)
+black = (0, 0, 0)
+red = (255, 0, 0)
 (width, height) = (800, 400)
+pygame.init()
+screen = pygame.display.set_mode((width, height))
+pygame.display.set_caption('Metronomo')
+screen.fill(background_colour)
+font = pygame.font.Font('freesansbold.ttf', 300)
 
-def stopwatch(beats):
-    bpm = beats/60
-    elapsed = 0
-    counter = 1
-    pygame.init()
-    screen = pygame.display.set_mode((width, height))
-    pygame.display.set_caption('Metronomo')
-    screen.fill(background_colour)
-    font = pygame.font.Font('freesansbold.ttf', 50) 
-    time.perf_counter() #just for reference, doesnt do anything
-    start = time.time()
-    time.sleep(1)
+
+def metronome(bpm):
+    counter = 0
     while True:
-        elapsed = time.time() - start #reference
         if counter < 4:
-            print(f"loop cycle time: {time.perf_counter()}, seconds count: {elapsed}, Counter: {str(counter)}")
+            beat_sound = 1
+            colour = black
             counter += 1
         else:
-            print(f"loop cycle time: {time.perf_counter()}, seconds count: {elapsed}, Counter: {str(counter)}")
+            beat_sound = 2
+            colour = red
             counter = 1
-        draw_screen(counter,screen,font)
-        time.sleep(1/bpm)
+        draw_screen(counter, colour, beat_sound)
+        time.sleep(60/bpm)
 
 
-def draw_screen(number,screen,font):
-    text = font.render(str(number), True, black, background_colour) 
-    textRect = text.get_rect()  
-    textRect.center = (width // 2, height // 2)     
-    pygame.display.flip()
+def draw_screen(number, colour, sound):
+    text = font.render(str(number), True, colour, background_colour)
+    textRect = text.get_rect()
+    textRect.center = (width // 2, height // 2)
 
     while True:
-        screen.blit(text, textRect) 
-        for event in pygame.event.get() : 
-            if event.type == pygame.QUIT : 
-                pygame.quit() 
-                quit() 
-        pygame.display.update() 
+        screen.blit(text, textRect)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+        pygame.display.update()
+        # if sound != 1:
+        #     playsound(
+        #         'C:\\Users\\jesus\\OneDrive\\Documentos\\Python\\metronomo\\metronomeDown.wav')
+        # else:
+        #     playsound(
+        #         'C:\\Users\\jesus\\OneDrive\\Documentos\\Python\\metronomo\\metronomeUp.wav')
         return
-             
+
 
 def run():
     bpm = int(input("Ingresa los bpm: "))
-    stopwatch(bpm)
+    metronome(bpm)
 
 
 if __name__ == "__main__":
